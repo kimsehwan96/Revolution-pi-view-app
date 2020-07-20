@@ -1,0 +1,9 @@
+{
+    "sensor_list":{
+        "InputValue_1" : "sensor_1",
+        "InputValue_2" : "senosr_2",
+        "InputValue_3" : "sensor_3",
+        "RTDValue_1" : "sensor_4"
+    },
+    "IMGPATH" : "/dev/piControl0"
+}
