@@ -29,6 +29,9 @@ def push_values(msg):
     #emit('rtdata', {'data':get_data(profile)})
     emit('rtdata', {'data':random.randint(1,100)})
 
+#TODO: request는 1초에 한번씩 들어옴, request요청이 들어왔을 때, 센서 개수만큼의 데이터를 보내줘야함 (array로)
+# 'data' : [데이터1번, 2번, 3번, 4번] -> config.json의 센서 리스트 순서대로
+
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=9999)
 else:

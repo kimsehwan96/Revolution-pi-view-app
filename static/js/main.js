@@ -7,3 +7,5 @@ binder.on('rtdata', function(data) {
   var target = document.querySelector('#value_1')
   target.innerHTML = data.data
 });
+
+/* TODO: config.json에 있는 센서 데이터 개수만큼(4개) 표현해야 함. webserver 측에서 배열로 넘겨줘야 함 */
