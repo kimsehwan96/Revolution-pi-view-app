@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 	<title></title>
     <style type="text/css">
         *{
@@ -19,13 +22,38 @@
        td{
            background-color:#4c4c4c;
         }
+        .value_num{
+            text-align:left;
+            font-size: 20px;
+            margin-left: 10px;
+            border-width: 5px;
+            padding-right: 80%;
+        }
+        .value_label{
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-  <div style="height:100%">
+    <script>
+        var binder = io("http://localhost:9999/data");
+          setInterval(function() {
+            binder.emit('request', {'time': Date.now()});
+          }, 1000);
+          binder.on('rtdata', function(data) {
+            console.log('binder buffered: ', data)
+            var target = document.querySelector('#value_1')
+            target.innerHTML = data.data
+          });
+    </script>
+  <div class='outer_table' style="height:100%">
 	<table style="height:100%">
         <tr>
-        <td></td>
+        <td>
+            <div class='value_label'>
+                <p class='value_num' id='value_1'></p>
+            </div>
+        </td>
         <td></td>
         </tr>
         <tr>

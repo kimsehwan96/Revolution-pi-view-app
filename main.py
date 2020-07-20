@@ -21,12 +21,13 @@ TEST_VALUE = None
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('responsive_localview.html')
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     profile = get_profile('config.json')
-    emit('rtdata', {'data':get_data(profile)})
+    #emit('rtdata', {'data':get_data(profile)})
+    emit('rtdata', {'data':random.randint(1,100)})
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=9999)
