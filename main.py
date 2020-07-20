@@ -7,7 +7,8 @@ from time import sleep
 from flask_cors import CORS
 import random
 import threading
-
+from revpi import get_data
+from util import get_profile
 
 async_mode = None
 app = Flask(__name__)
@@ -18,23 +19,16 @@ thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    emit('rtdata', {'data':making_number()})
-
-def making_number():
-    return random.randint(1,100)
-
-
-
+    profile = get_profile('config.json')
+    emit('rtdata', {'data':get_data(profile)})
 
 if __name__ == '__main__':
-
     socketio.run(app, debug=True, port=9999)
-#test
+else:
+    socketio.run(app, debug=True, port=9999)
