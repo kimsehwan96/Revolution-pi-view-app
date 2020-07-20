@@ -57,3 +57,7 @@ binder라는 변수로 socketio, 네임스페이스는 '/data' 를 할당.
 client는 다시 `binder.on('rtdata', function().....` 으로 'rtdata 주제로 데이터를 수신중이며,
 
 웹서버에서 보낸 'rtdata' 주제가 들어왔을 때 #value_1 id를 셀렉트해 HTML마크업을 1초마다 변경하게 된다.
+
+`TODO` : 현재는 socketio로 받은 실시간 변화하는 값을, document.querySeletor를 이용해 태그 id 선택 후  
+  
+.innerHTML 에 실시간 변화하는 값을 넣어서 구현 -> 더 나은 방법 찾아보기
