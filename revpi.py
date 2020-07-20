@@ -1,6 +1,7 @@
 import revpimodio2
 import json
 import os
+from util import get_profile
 
 TEST_JSON = {
     "sensor_list":{
@@ -35,13 +36,7 @@ def get_data(profile:dict) -> list:
 
 if __name__ == "__main__":
     #test logic
-    try:
-        with open('config.json', 'r') as f:
-            response = json.load(f)
-            PROFILE = response
-    except Exception as e:
-        print('failed to read file', e)
-
+    PROFILE = get_profile('config.json')
     print(get_data(PROFILE))
 
     
