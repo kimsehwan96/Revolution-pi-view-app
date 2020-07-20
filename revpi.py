@@ -18,7 +18,7 @@ PROFILE = None
 def get_data(profile:dict) -> list:
     image_path = profile.get('IMGPATH')
     sensor_profile = profile.get('sensor_list')
-    sensor_list = sensor_profile.keys()   
+    sensor_list = list(sensor_profile.keys()) 
     rev = revpimodio2.RevPiModIO(autorefresh = True, procimg=image_path)
     IO = rev.io
 
