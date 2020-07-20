@@ -1,7 +1,9 @@
 # 환경셋업 방법
 
 `$pip install -r requirements.txt`   
+
 혹은  
+
 `$python3 -m pip install -r requirements.txt`  
 
 상기 명령어를 이용하여 필요한 패키지를 설치한다.
