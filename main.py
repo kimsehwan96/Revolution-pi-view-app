@@ -5,10 +5,10 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 from time import sleep
 from flask_cors import CORS
-import random
-import threading
 from revpi import get_data
 from util import get_profile
+import random
+import threading
 
 async_mode = None
 app = Flask(__name__)
