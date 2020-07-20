@@ -1,0 +1,26 @@
+*{
+    margin:0;
+    padding:0;
+}
+html, body {
+    background-color:#2b2b2b;
+    height:100%;
+}
+table {
+    border-spacing:10px;
+    width:100%;
+    background-color:#2b2b2b;
+}
+td{
+   background-color:#4c4c4c;
+}
+.value_num{
+    text-align:left;
+    font-size: 20px;
+    margin-left: 10px;
+    border-width: 5px;
+    padding-right: 80%;
+}
+.value_label{
+    margin-top: 10px;
+}
