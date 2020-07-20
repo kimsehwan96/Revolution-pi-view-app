@@ -15,6 +15,8 @@
 
 ## 웹서버 측
 
+`python 코드`
+
 ```python3
 @socketio.on('request', namespace='/data')
 def push_values(msg):
@@ -25,6 +27,9 @@ flask에서는 socketio를 통해 'request'라는 주제로, '/data' 네임스�
 socketio로 다시 emit하고, 주제는 'rtdata'이다. 데이터는 random.randint로 보내는 중.
 
 ## 클라이언트 측
+
+`javascript 코드`
+
 ```javascript
 
     var binder = io("http://localhost:9999/data");
@@ -38,6 +43,8 @@ socketio로 다시 emit하고, 주제는 'rtdata'이다. 데이터는 random.ran
       });
 
 ```
+
+socketio javascript로 구성되어있다. index.html 참고 -> TODO: CDN이 아닌 로컬에 socketio 관련 js 파일 배포 필요.
 
 binder라는 변수로 socketio, 네임스페이스는 '/data' 를 할당.
 
