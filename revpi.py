@@ -13,8 +13,14 @@ TEST_JSON = {
 }
 
 #for Test
+PROFILE = None
 
-PROFILE = TEST_JSON
+try:
+    with open('config.json', 'r') as f:
+        response = json.load(f)
+        PROFILE = response
+except Exception as e:
+    print('failed to read file', e)
 
 def get_data(profile:dict) -> list:
     image_path = profile.get('IMGPATH')
@@ -33,3 +39,16 @@ def get_data(profile:dict) -> list:
         rev_data[idx] = getattr(IO, sensor_list[idx]).value
 
     return rev_data
+
+if __name__ == "__main__":
+    #test
+    try:
+        with open('config.json', 'r') as f:
+            response = json.load(f)
+            PROFILE = response
+    except Exception as e:
+        print('failed to read file', e)
+
+    print(get_data(PROFILE))
+
+    
