@@ -40,5 +40,6 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=9999)
+    #emit('sensor_name', {'profile' })
 else:
     socketio.run(app, debug=True, port=9999)

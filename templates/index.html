@@ -5,22 +5,40 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
     <script>
-        var binder = io("http://localhost:9999/data");
-          setInterval(function() {
-            binder.emit('request', {'time': Date.now()});
-          }, 1000);
-          binder.on('rtdata', function(data) {
-            console.log('binder buffered: ', data)
-            var target = document.getElementById('data_1')
-            var target_2 = document.getElementById('data_2')
-            var target_3 = document.getElementById('data_3')
-            var target_4 = document.getElementById('data_4')
-            console.log(target)
-            target.innerHTML = data.data[0]
-            target_2.innerHTML = data.data[1]
-            target_3.innerHTML = data.data[2]
-            target_4.innerHTML = data.data[3]
-          });
+var binder = io("http://localhost:9999/data");
+setInterval(function() {
+  binder.emit('request', {'time': Date.now()});
+}, 1000);
+binder.on('rtdata', function(data) {
+  console.log('binder buffered: ', data)
+  var target = document.getElementById('data_1')
+  var target_2 = document.getElementById('data_2')
+  var target_3 = document.getElementById('data_3')
+  var target_4 = document.getElementById('data_4')
+  console.log(target)
+  target.innerHTML = data.data[0]
+  target_2.innerHTML = data.data[1]
+  target_3.innerHTML = data.data[2]
+  target_4.innerHTML = data.data[3]
+});
+
+var profiler = io("http://localhost:9999/profile");
+profiler.emit('sensor_name',{'null':'None'});
+function get_profile() {
+  profiler.on('sensor_name', function(profile) {
+    console.log('get_data', profile)
+    var sensor_name = document.getElementById('sensor_name')
+    var sensor_name_2 = document.getElementById('sensor_name_2')
+    var sensor_name_3 = document.getElementById('sensor_name_3')
+    var sensor_name_4 = document.getElementById('sensor_name_4')
+    console.log(profile)
+    sensor_name.innerHTML = profile.name[0]
+    sensor_name_2.innerHTML = profile.name[1]
+    sensor_name_3.innerHTML = profile.name[2]
+    sensor_name_4.innerHTML = profile.name[3]
+  })
+}
+get_profile()
     </script>
     <title>로컬 모니터링 시스템</title>
     <!-- TODO: style 관련 요소들을 style.css로 옮기는 작업 필요. -->
@@ -70,7 +88,7 @@
         <td id="value_1">
             <div style="height:100%; width:50%;">
                 <div>
-                    <font class ="value_font" >센서1번</font>
+                    <font id = 'sensor_name' class ="value_font" >센서1번</font>
                 </div>
                 <div style="margin-top: 30%;">
                     <font id ='data_1' style="font-size:400%;color: white;">50</font>
@@ -80,7 +98,7 @@
         <td id = "value_2">
             <div style="height:100%; width:50%;">
                 <div>
-                    <font class ="value_font" >센서2번</font>
+                    <font id = 'sensor_name_2' class ="value_font" >센서2번</font>
                 </div>
                 <div style="margin-top: 30%;">
                     <font id='data_2' style="font-size:400%;color: white;">50</font>
@@ -92,7 +110,7 @@
         <td id = "value_3">
             <div style="height:100%; width:50%;">
                 <div>
-                    <font class ="value_font" >센서3번</font>
+                    <font id = 'sensor_name_3' class ="value_font" >센서3번</font>
                 </div>
                 <div style="margin-top: 30%;">
                     <font id='data_3' style="font-size:400%;color: white;">50</font>
@@ -102,7 +120,7 @@
         <td id = "value_4">
             <div style="height:100%; width:50%;">
                 <div>
-                    <font class ="value_font" >센서4번</font>
+                    <font id = 'sensor_name_4' class ="value_font" >센서4번</font>
                 </div>
                 <div style="margin-top: 30%;">
                     <font id ='data_4' style="font-size:400%;color: white;">50</font>

@@ -4,8 +4,31 @@ setInterval(function() {
 }, 1000);
 binder.on('rtdata', function(data) {
   console.log('binder buffered: ', data)
-  var target = document.getElementById('value_1')
-  target.innerHTML = data.data
+  var target = document.getElementById('data_1')
+  var target_2 = document.getElementById('data_2')
+  var target_3 = document.getElementById('data_3')
+  var target_4 = document.getElementById('data_4')
+  console.log(target)
+  target.innerHTML = data.data[0]
+  target_2.innerHTML = data.data[1]
+  target_3.innerHTML = data.data[2]
+  target_4.innerHTML = data.data[3]
 });
 
-/* TODO: config.json에 있는 센서 데이터 개수만큼(4개) 표현해야 함. webserver 측에서 배열로 넘겨줘야 함 */
+var profiler = io("http://localhost:9999/profile");
+profiler.emit('sensor_name',{'null':'None'});
+function get_profile() {
+  profiler.on('sensor_name', function(profile) {
+    console.log('get_data', profile)
+    var sensor_name = document.getElementById('sensor_name')
+    var sensor_name_2 = document.getElementById('sensor_name_2')
+    var sensor_name_3 = document.getElementById('sensor_name_3')
+    var sensor_name_4 = document.getElementById('sensor_name_4')
+    console.log(profile)
+    sensor_name.innerHTML = profile.name[0]
+    sensor_name_2.innerHTML = profile.name[1]
+    sensor_name_3.innerHTML = profile.name[2]
+    sensor_name_4.innerHTML = profile.name[3]
+  })
+}
+get_profile()

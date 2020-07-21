@@ -5,8 +5,10 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 from time import sleep
 from flask_cors import CORS
+from util import get_senosr_names
 import random
 import threading
+
 
 
 async_mode = None
@@ -27,6 +29,11 @@ def index():
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     emit('rtdata', {'data':making_number()})
+
+@socketio.on('sensor_name', namespace='/profile')
+def push_profile(msg):
+    emit('sensor_name', {'name' : get_senosr_names('config.json')})
+
     
 
 def making_number():
@@ -40,6 +47,5 @@ def making_number():
 
 
 if __name__ == '__main__':
-
     socketio.run(app, debug=True, port=9999)
 #test
