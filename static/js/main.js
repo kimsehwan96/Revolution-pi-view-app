@@ -9,10 +9,10 @@ binder.on('rtdata', function(data) {
   var target_3 = document.getElementById('data_3')
   var target_4 = document.getElementById('data_4')
   console.log(target)
-  target.innerHTML = data.data[0] + 'mmAQ'
-  target_2.innerHTML = data.data[1] + 'A'
-  target_3.innerHTML = data.data[2] + 'A'
-  target_4.innerHTML = data.data[3] + '℃'
+  target.innerHTML = data.data[0] + '\nmmAQ'
+  target_2.innerHTML = data.data[1] + '\nA'
+  target_3.innerHTML = data.data[2] + '\nA'
+  target_4.innerHTML = data.data[3] + '\n℃'
 });
 
 var profiler = io("http://localhost:9999/profile");
