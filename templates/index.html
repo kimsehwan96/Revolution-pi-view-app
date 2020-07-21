@@ -11,7 +11,8 @@
       }, 1000);
       binder.on('rtdata', function(data) {
         console.log('binder buffered: ', data)
-        var target = document.querySelector('#value_1')
+        var target = document.getElementById('value_1')
+        console.log(target)
         target.innerHTML = data.data
       });
 </script>
