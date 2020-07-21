@@ -33,6 +33,7 @@ def get_data(profile:dict) -> list:
         rev_data[idx] = getattr(IO, sensor_list[idx]).value
 
     return rev_data
+    #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
 if __name__ == "__main__":
     #test logic

@@ -27,6 +27,7 @@ def index():
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     emit('rtdata', {'data':making_number()})
+    
 
 def making_number():
     return random.randint(1,100)
