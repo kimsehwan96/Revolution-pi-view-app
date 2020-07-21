@@ -4,7 +4,7 @@ setInterval(function() {
 }, 1000);
 binder.on('rtdata', function(data) {
   console.log('binder buffered: ', data)
-  var target = document.querySelector('#value_1')
+  var target = document.getElementById('value_1')
   target.innerHTML = data.data
 });
 
