@@ -1,22 +1,110 @@
-<!doctype html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-  <body>
+<head>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-<script>
-    var binder = io("http://localhost:9999/data");
-      setInterval(function() {
-        binder.emit('request', {'time': Date.now()});
-      }, 1000);
-      binder.on('rtdata', function(data) {
-        console.log('binder buffered: ', data)
-        var target = document.getElementById('value_1')
-        console.log(target)
-        target.innerHTML = data.data
-      });
-</script>
-<div id='value_1'>  
-</div> 
-  </body>
+    <script>
+        var binder = io("http://localhost:9999/data");
+          setInterval(function() {
+            binder.emit('request', {'time': Date.now()});
+          }, 1000);
+          binder.on('rtdata', function(data) {
+            console.log('binder buffered: ', data)
+            var target = document.getElementById('data_1')
+            console.log(target)
+            target.innerHTML = data.data
+          });
+    </script>
+    <title>로컬 모니터링 시스템</title>
+    <!-- TODO: style 관련 요소들을 style.css로 옮기는 작업 필요. -->
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+        html, body {
+            background-color:#2b2b2b;
+            height:100%;
+        }
+        table {
+            border-spacing:10px;
+            width:100%;
+            background-color:#2b2b2b;
+        }
+       td{
+           background-color:#4c4c4c;
+        }
+        #value_1{
+            width:50%;
+            height: 50%;
+        }
+        #value_2{
+            width:50%;
+            height: 50%;
+        }
+        #value_3{
+            width:50%;
+            height: 50%;
+        }
+        #value_4{
+            width:50%;
+            height: 50%;
+        }
+        .value_font{
+            font-size: 50px;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+  <div style="height:100%">
+    <table style="height:100%">
+        <tr>
+        <td id="value_1">
+            <div style="height:100%; width:50%;">
+                <div>
+                    <font class ="value_font" >센서1번</font>
+                </div>
+                <div style="margin-top: 30%;">
+                    <font id ='data_1' style="font-size:400%;color: white;">50</font>
+                </div>
+            </div>
+        </td>
+        <td id = "value_2">
+            <div style="height:100%; width:50%;">
+                <div>
+                    <font class ="value_font" >센서2번</font>
+                </div>
+                <div style="margin-top: 30%;">
+                    <font id='data_2' style="font-size:400%;color: white;">50</font>
+                </div>
+            </div>
+        </td>
+        </tr>
+        <tr>
+        <td id = "value_3">
+            <div style="height:100%; width:50%;">
+                <div>
+                    <font class ="value_font" >센서3번</font>
+                </div>
+                <div style="margin-top: 30%;">
+                    <font id='data_2' style="font-size:400%;color: white;">50</font>
+                </div>
+            </div>
+        </td>
+        <td id = "value_4">
+            <div style="height:100%; width:50%;">
+                <div>
+                    <font class ="value_font" >센서4번</font>
+                </div>
+                <div style="margin-top: 30%;">
+                    <font id ='data_4' style="font-size:400%;color: white;">50</font>
+                </div>
+            </div>
+        </td>
+        </tr>
+    </table>
+    </div>
+</body>
 </html>
