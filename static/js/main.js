@@ -32,3 +32,5 @@ function get_profile() {
   })
 }
 get_profile()
+
+/* TODO: config.json의 필드개수(센서개수)에 따라서 반응하는 앱 */

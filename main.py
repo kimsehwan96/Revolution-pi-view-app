@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 from time import sleep
 from flask_cors import CORS
 from revpi import get_data
-from util import get_profile
+from util import get_profile, get_senosr_names
 import random
 import threading
 
@@ -26,12 +26,15 @@ def index():
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     profile = get_profile('config.json')
-    #emit('rtdata', {'data':get_data(profile)})
-    emit('rtdata', {'data':random.randint(1,100)})
+    emit('rtdata', {'data':get_data(profile)})
+
+@socketio.on('sensor_name', namespace='/profile')
+def push_profile(msg):
+    emit('sensor_name', {'name' : get_senosr_names('config.json')})
 
 @app.errorhandler(404) 
 def page_not_found(error): 
-    return render_template('responsive_localview.html')
+    return render_template('index.html')
 #404에러 발생할 경우 (page not found) 메인 페이지로 전환
 
 
@@ -40,6 +43,5 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=9999)
-    #emit('sensor_name', {'profile' })
 else:
     socketio.run(app, debug=True, port=9999)

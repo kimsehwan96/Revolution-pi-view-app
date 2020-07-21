@@ -14,13 +14,23 @@ table {
 td{
    background-color:#4c4c4c;
 }
-.value_num{
-    text-align:left;
-    font-size: 20px;
-    margin-left: 10px;
-    border-width: 5px;
-    padding-right: 80%;
+#value_1{
+    width:50%;
+    height: 50%;
 }
-.value_label{
-    margin-top: 10px;
+#value_2{
+    width:50%;
+    height: 50%;
+}
+#value_3{
+    width:50%;
+    height: 50%;
+}
+#value_4{
+    width:50%;
+    height: 50%;
+}
+.value_font{
+    font-size: 50px;
+    color:white;
 }
