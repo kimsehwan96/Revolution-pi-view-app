@@ -30,7 +30,11 @@ def push_values(msg):
     
 
 def making_number():
-    return random.randint(1,100)
+    data = [0]*4
+    for i in range(4):
+        data[i]=random.randint(1,100)
+    
+    return data
 
 
 

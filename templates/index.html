@@ -12,8 +12,14 @@
           binder.on('rtdata', function(data) {
             console.log('binder buffered: ', data)
             var target = document.getElementById('data_1')
+            var target_2 = document.getElementById('data_2')
+            var target_3 = document.getElementById('data_3')
+            var target_4 = document.getElementById('data_4')
             console.log(target)
-            target.innerHTML = data.data
+            target.innerHTML = data.data[0]
+            target_2.innerHTML = data.data[1]
+            target_3.innerHTML = data.data[2]
+            target_4.innerHTML = data.data[3]
           });
     </script>
     <title>로컬 모니터링 시스템</title>
@@ -89,7 +95,7 @@
                     <font class ="value_font" >센서3번</font>
                 </div>
                 <div style="margin-top: 30%;">
-                    <font id='data_2' style="font-size:400%;color: white;">50</font>
+                    <font id='data_3' style="font-size:400%;color: white;">50</font>
                 </div>
             </div>
         </td>
