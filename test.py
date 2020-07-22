@@ -9,8 +9,6 @@ from util import get_senosr_names
 import random
 import threading
 
-
-
 async_mode = None
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -19,8 +17,6 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-
-
 
 @app.route('/')
 def index():
@@ -42,9 +38,6 @@ def making_number():
         data[i]=random.randint(1,100)
     
     return data
-
-
-
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=9999)
