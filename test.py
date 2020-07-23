@@ -22,6 +22,10 @@ TEST_VALUE = None
 def index():
     return render_template('index.html')
 
+@app.route('/chart')
+def chart():
+    return render_template('chart_demo.html')
+
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     emit('rtdata', {'data':making_number()})
