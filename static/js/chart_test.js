@@ -1,7 +1,7 @@
 $(function() {
     $('#container').highcharts({  
     chart: {
-        type : 'bar'
+        type : 'column'
     },
     title:{
         text : 'Test chart'
