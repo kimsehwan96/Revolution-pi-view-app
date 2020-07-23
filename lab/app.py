@@ -25,7 +25,9 @@ def bar():
     bar_values=values
     return render_template('bar_chart.html', title='Bitcoin Monthly Price in USD', max=17000, labels=bar_labels, values=bar_values)
 
-@app.route('/line')
+
+@app.route('/')
+
 def line():
     line_labels=labels
     line_values=values
@@ -38,4 +40,4 @@ def pie():
     return render_template('pie_chart.html', title='Bitcoin Monthly Price in USD', max=17000, set=zip(values, labels, colors))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='127.0.0.1', port=8080)
