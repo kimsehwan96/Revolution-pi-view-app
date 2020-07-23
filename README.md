@@ -61,3 +61,11 @@ client는 다시 `binder.on('rtdata', function().....` 으로 'rtdata 주제로 
 `TODO` : 현재는 socketio로 받은 실시간 변화하는 값을, document.querySeletor를 이용해 태그 id 선택 후  
   
 .innerHTML 에 실시간 변화하는 값을 넣어서 구현 -> 더 나은 방법 찾아보기
+
+# highchar Demo
+
+`127.0.0.1:9999/chart` 로 접근  
+highchart 라이브러리 사용을 위해서는  
+jquery 먼저 불러와야 한다.  
+
+TODO: 실시간 데이터 chart 화
