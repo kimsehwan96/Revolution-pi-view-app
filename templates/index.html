@@ -2,7 +2,7 @@
 <html>
 <head>
     <!-- CDN의 경우 향후 실제 Edge에 배포시 제거히고, 로컬에 js 파일 배포 필요-->
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script type = "text/javascript" src = "{{ url_for('static', filename='js/socket.io-1.2.0.js') }}"></script>
     <script type = "text/javascript" src = "{{ url_for('static', filename='js/index.js') }}"></script>
     <title>로컬 모니터링 시스템</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">

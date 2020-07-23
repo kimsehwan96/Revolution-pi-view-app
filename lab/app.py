@@ -25,7 +25,9 @@ def bar():
     bar_values=values
     return render_template('bar_chart.html', title='Bitcoin Monthly Price in USD', max=17000, labels=bar_labels, values=bar_values)
 
+
 @app.route('/')
+
 def line():
     line_labels=labels
     line_values=values
