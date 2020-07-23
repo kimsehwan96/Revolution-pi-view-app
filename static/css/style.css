@@ -25,3 +25,9 @@ table {
     width:50%;
     height: 50%;
 }
+td{
+    background-color:#4c4c4c;
+    font-size:200%;
+    color: white;
+    width: 50%;
+}
