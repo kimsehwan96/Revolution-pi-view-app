@@ -27,6 +27,7 @@ def index():
 def push_values(msg):
     profile = get_profile('config.json')
     emit('rtdata', {'data':get_data(profile)})
+    sleep(1) #TODO: config 파일에서 이 내용을 설정 할 수 있게
 
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
