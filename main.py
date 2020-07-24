@@ -21,7 +21,7 @@ TEST_VALUE = None
 
 @app.route('/')
 def index():
-    return render_template('responsive_localview.html')
+    return render_template('index.html')
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
