@@ -7,9 +7,9 @@ def change_data(profile:dict, inputData:int):
     change_start = profile.get('outputRange')[0]
     change_end = profile.get('outputRange')[1]
 
-    n = (change_end-change_start)/(input_end-input_start)
+    n = (change_end - change_start) / (input_end - input_start)
 
-    raw = inputData*n + change_start - input_start*n
+    raw = inputData * n + change_start - input_start * n
     result = float(round(raw, 2))
     print(result)
     return result
