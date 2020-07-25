@@ -21,10 +21,22 @@ class RevolutionPi:
     def __init__(self, profile_path):
         self._profile = get_profile(profile_path)
         self.image_path = self._profile.get("IMAGPATH")
+        self.sensor_profile = self._profile.get("sensor_list")
+        self.normalization_profile = self._profile.get("data_information")
         self.sampling_time = 0.02 #20ms
     
     def get_data(self):
-        pass
+        sensor_list = list(self.sensor_profile.keys())
+        rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
+        IO = rev.io
+
+        rev_data = [0]*len(sensor_list)
+        
+        for idx in range(len(sensor_list)):
+            rev_data[idx] = getattr(IO, sensor_list[idx]).value
+        
+        return rev_data #list
+
 
     def data_normalization(self):
         pass

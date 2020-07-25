@@ -12,3 +12,8 @@ def get_senosr_names(fileName:str) -> list:
     profile = get_profile(fileName)
     return list(profile.get('sensor_list').values())
     
+
+
+if __name__ == "__main__":
+    response = get_profile('config.json')
+    print(response)
