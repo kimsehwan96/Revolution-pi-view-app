@@ -8,20 +8,20 @@
     "IMGPATH" : "/dev/piControl0",
     "data_information" : {
         "InputValue_1" : {
-            "original_range" : [4000, 20000],
-            "changed_range" : [4, 20]
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
         },
         "InputValue_2" : {
-            "original_range" : [4000, 20000],
-            "changed_range" : [4, 20]
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
         },
         "InputValue_3" : {
-            "original_range" : [4000, 20000],
-            "changed_range" : [4, 20]
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
         },
         "RTDValue_1" : {
-            "original_range" : [0, 10000],
-            "changed_range" : [0, 100]
+            "originalRange" : [0, 10000],
+            "changedRange" : [0, 100]
         }
     }
 } 

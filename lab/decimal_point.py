@@ -1,4 +1,21 @@
-TEST = {'inputRange':[0, 5000], 'outputRange':[0, 500]}
+TEST = {
+        "InputValue_1" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "InputValue_2" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "InputValue_3" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "RTDValue_1" : {
+            "originalRange" : [0, 10000],
+            "changedRange" : [0, 100]
+        }
+    }
 
 def change_data(profile:dict, inputData:int):
     input_start = profile.get('inputRange')[0]

@@ -16,6 +16,21 @@ TEST_JSON = {
 #for Test
 PROFILE = None
 
+class RevolutionPi:
+
+    def __init__(self, profile_path):
+        self._profile = get_profile(profile_path)
+        self.image_path = self._profile.get("IMAGPATH")
+        self.sampling_time = 0.02 #20ms
+    
+    def get_data(self):
+        pass
+
+    def data_normalization(self):
+        pass
+
+    #TODO: making class RevolutionPi class & method
+
 def get_data(profile:dict) -> list:
     image_path = profile.get('IMGPATH')
     sensor_profile = profile.get('sensor_list')
