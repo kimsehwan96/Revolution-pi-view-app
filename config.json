@@ -21,7 +21,7 @@
         },
         "RTDValue_1" : {
             "originalRange" : [0, 10000],
-            "changedRange" : [0, 100]
+            "changedRange" : [0, 1000]
         }
     }
 } 
