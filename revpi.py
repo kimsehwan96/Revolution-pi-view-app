@@ -5,13 +5,32 @@ from util import get_profile
 
 TEST_JSON = {
     "sensor_list":{
-        "InputValue_1" : "sensor_1",
-        "InputValue_2" : "senosr_2",
-        "InputValue_3" : "sensor_3",
-        "RTDValue_1" : "sensor_4"
+        "InputValue_1" : "차압계",
+        "InputValue_2" : "송풍기",
+        "InputValue_3" : "배풍기",
+        "RTDValue_1" : "온도"
     },
-    "IMGPATH" : "/dev/piControl0"
-}
+    "IMGPATH" : "/dev/piControl0",
+    "data_information" : {
+        "InputValue_1" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "InputValue_2" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "InputValue_3" : {
+            "originalRange" : [4000, 20000],
+            "changedRange" : [4, 20]
+        },
+        "RTDValue_1" : {
+            "originalRange" : [0, 10000],
+            "changedRange" : [0, 100]
+        }
+    }
+} 
+
 
 #for Test
 PROFILE = None
@@ -40,14 +59,12 @@ class RevolutionPi:
     def data_normalization(self):
         before_buffer = self.get_data()
         after_buffer = []
-        if not profile:
-            profile = self.normalization_profile
-        else:
-            pass
-        input_start = profile.get('inputRange')[0]
-        input_end = profile.get('inputRange')[1]
-        change_start = profile.get('outputRange')[0]
-        change_end = profile.get('outputRange')[1]
+        profile = self.normalization_profile
+
+        input_start = profile.get('originalRange')[0]
+        input_end = profile.get('originalRange')[1]
+        change_start = profile.get('changedRange')[0]
+        change_end = profile.get('changedRange')[1]
         n = (change_end - change_start) / (input_end - input_start)
         for value in before_buffer:
             processed_data = value * n + change_start - input_start * n
@@ -83,5 +100,6 @@ if __name__ == "__main__":
     #print(get_data(PROFILE))
     rev = RevolutionPi('config.json')
     print(rev.get_data())
+    print(rev.data_normalization())
 
     
