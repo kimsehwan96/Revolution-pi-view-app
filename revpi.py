@@ -43,6 +43,8 @@ class RevolutionPi:
         self.sensor_profile = self._profile.get("sensor_list")
         self.normalization_profile = self._profile.get("data_information")
         self.sampling_time = 0.02 #20ms
+        self.before_buffer = []
+        self.after_buffer = []
     
     def get_data(self):
         sensor_list = list(self.sensor_profile.keys())
@@ -55,8 +57,8 @@ class RevolutionPi:
         return rev_data #list
 
     def data_normalization(self):
-        before_buffer = self.get_data()
-        after_buffer = []
+        self.before_buffer = self.get_data()
+        self.after_buffer = []
         profile = self.normalization_profile
 
         for i,v in enumerate(profile):
