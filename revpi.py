@@ -67,10 +67,10 @@ class RevolutionPi:
             change_start = profile.get(v).get('changedRange')[0]
             change_end = profile.get(v).get('changedRange')[1]
             n = (change_end - change_start) / (input_end - input_start)
-            processed_data = before_buffer[i] * n + change_start - input_start * n
-            after_buffer.append(float(round(processed_data,2)))
+            processed_data = self.before_buffer[i] * n + change_start - input_start * n
+            self.after_buffer.append(float(round(processed_data,2)))
 
-        return after_buffer
+        return self.after_buffer
 
     #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
