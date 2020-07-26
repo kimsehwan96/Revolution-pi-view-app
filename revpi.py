@@ -48,9 +48,7 @@ class RevolutionPi:
         sensor_list = list(self.sensor_profile.keys())
         rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
         IO = rev.io
-
-        rev_data = [0]*len(sensor_list)
-        
+        rev_data = [0]*len(sensor_list)  
         for idx in range(len(sensor_list)):
             rev_data[idx] = getattr(IO, sensor_list[idx]).value
         
@@ -69,44 +67,12 @@ class RevolutionPi:
             n = (change_end - change_start) / (input_end - input_start)
             processed_data = before_buffer[i] * n + change_start - input_start * n
             after_buffer.append(float(round(processed_data,2)))
-            
-        #input_start = profile.get('originalRange')[0]
-        #input_end = profile.get('originalRange')[1]
-        #change_start = profile.get('changedRange')[0]
-        #change_end = profile.get('changedRange')[1]
-        #n = (change_end - change_start) / (input_end - input_start)
-        #for value in before_buffer:
-        #    processed_data = value * n + change_start - input_start * n
-        #    after_buffer.append(float(round(processed_data,2)))
 
         return after_buffer
 
-
-    #TODO: making class RevolutionPi class & method
-
-def get_data(profile:dict) -> list:
-    image_path = profile.get('IMGPATH')
-    sensor_profile = profile.get('sensor_list')
-    sensor_list = list(sensor_profile.keys()) 
-    rev = revpimodio2.RevPiModIO(autorefresh = True, procimg=image_path)
-    IO = rev.io
-
-    rev_data = []
-
-    #initalizing list
-    for idx in range(len(sensor_list)):
-        rev_data.append(0)
-
-    for idx in range(len(sensor_list)):
-        rev_data[idx] = getattr(IO, sensor_list[idx]).value
-
-    return rev_data
     #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
 if __name__ == "__main__":
-    #test logic
-    #PROFILE = get_profile('config.json')
-    #print(get_data(PROFILE))
     rev = RevolutionPi('config.json')
     print(rev.get_data())
     print(rev.data_normalization())
