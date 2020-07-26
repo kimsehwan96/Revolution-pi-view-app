@@ -37,9 +37,24 @@ class RevolutionPi:
         
         return rev_data #list
 
-
     def data_normalization(self):
-        pass
+        before_buffer = self.get_data()
+        after_buffer = []
+        if not profile:
+            profile = self.normalization_profile
+        else:
+            pass
+        input_start = profile.get('inputRange')[0]
+        input_end = profile.get('inputRange')[1]
+        change_start = profile.get('outputRange')[0]
+        change_end = profile.get('outputRange')[1]
+        n = (change_end - change_start) / (input_end - input_start)
+        for value in before_buffer:
+            processed_data = value * n + change_start - input_start * n
+            after_buffer.append(float(round(processed_data,2)))
+
+        return after_buffer
+
 
     #TODO: making class RevolutionPi class & method
 
