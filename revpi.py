@@ -64,7 +64,9 @@ def get_data(profile:dict) -> list:
 
 if __name__ == "__main__":
     #test logic
-    PROFILE = get_profile('config.json')
-    print(get_data(PROFILE))
+    #PROFILE = get_profile('config.json')
+    #print(get_data(PROFILE))
+    rev = RevolutionPi('config.json')
+    print(rev.get_data())
 
     
