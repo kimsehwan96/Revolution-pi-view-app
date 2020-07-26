@@ -61,14 +61,23 @@ class RevolutionPi:
         after_buffer = []
         profile = self.normalization_profile
 
-        input_start = profile.get('originalRange')[0]
-        input_end = profile.get('originalRange')[1]
-        change_start = profile.get('changedRange')[0]
-        change_end = profile.get('changedRange')[1]
-        n = (change_end - change_start) / (input_end - input_start)
-        for value in before_buffer:
+        for idx, value in enumerate(profile):
+            input_start = profile.get(value).get('originalRange')[0]
+            input_end = profile.get(value).get('originalRange')[1]
+            change_start = profile.get(value).get('changedRange')[0]
+            change_end = profile.get(value).get('changedRange')[1]
+            n = (change_end - change_start) / (input_end - input_start)
             processed_data = value * n + change_start - input_start * n
             after_buffer.append(float(round(processed_data,2)))
+            
+        #input_start = profile.get('originalRange')[0]
+        #input_end = profile.get('originalRange')[1]
+        #change_start = profile.get('changedRange')[0]
+        #change_end = profile.get('changedRange')[1]
+        #n = (change_end - change_start) / (input_end - input_start)
+        #for value in before_buffer:
+        #    processed_data = value * n + change_start - input_start * n
+        #    after_buffer.append(float(round(processed_data,2)))
 
         return after_buffer
 
