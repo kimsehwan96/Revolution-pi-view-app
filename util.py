@@ -8,7 +8,7 @@ def get_profile(fileName:str) -> dict:
     except Exception as e:
         print('failed to read file', e)
 
-def get_senosr_names(fileName:str) -> list:
+def get_sensor_names(fileName:str) -> list:
     profile = get_profile(fileName)
     return list(profile.get('sensor_list').values())
     
