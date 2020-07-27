@@ -46,8 +46,9 @@ def singleton(cls):
 @singleton
 class RevolutionPi:
 
-    def __init__(self, profile_path):
-        self._profile = get_profile(profile_path)
+    def __init__(self):
+        self.profile_path = "config.json"
+        self._profile = get_profile(self.profile_path)
         self.image_path = self._profile.get("IMAGPATH")
         self.sensor_profile = self._profile.get("sensor_list")
         self.normalization_profile = self._profile.get("data_information")
@@ -85,7 +86,7 @@ class RevolutionPi:
     #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
 if __name__ == "__main__":
-    rev = RevolutionPi('config.json')
+    rev = RevolutionPi()
     print(rev.get_data())
     print(rev.data_normalization())
 
