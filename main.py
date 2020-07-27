@@ -19,7 +19,7 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-
+revpi = RevolutionPi('config.json')
 
 
 @app.route('/')
@@ -28,7 +28,6 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    revpi = RevolutionPi('config.json')
     data = revpi.data_normalization()
     try:
         emit('rtdata', {'data':data})
@@ -45,9 +44,9 @@ def push_profile(msg):
         print("error occured when emmiting sensor profile :", traceback.format_exc())
     emit('sensor_name', {'name' : sensor_profile})
 
-@app.errorhandler(404) 
-def page_not_found(error): 
-    return render_template('index.html')
+#@app.errorhandler(404) 
+#def page_not_found(error): 
+#    return render_template('index.html')
 #404에러 발생할 경우 (page not found) 메인 페이지로 전환
 
 

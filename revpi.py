@@ -37,6 +37,12 @@ PROFILE = None
 
 class RevolutionPi:
 
+    def __new__(self):
+        if not hasattr(self, 'instance'):
+            self.instance = super( Singleton, self).__new__(self)
+            return self.instance
+
+
     def __init__(self, profile_path):
         self._profile = get_profile(profile_path)
         self.image_path = self._profile.get("IMAGPATH")
