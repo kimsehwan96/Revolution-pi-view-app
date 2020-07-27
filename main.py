@@ -7,6 +7,7 @@ from time import sleep
 from flask_cors import CORS
 from revpi import get_data
 from util import get_profile, get_senosr_names
+from revpi import RevolutionPi
 import random
 import threading
 
@@ -18,6 +19,8 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
+revpi = RevolutionPi('config.json')
+
 
 @app.route('/')
 def index():
@@ -26,7 +29,8 @@ def index():
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     profile = get_profile('config.json')
-    emit('rtdata', {'data':get_data(profile)})
+    #emit('rtdata', {'data':get_data(profile)})
+    emit('rtdata', {'data':revpi.data_normalization()})
     sleep(1) #TODO: config 파일에서 이 내용을 설정 할 수 있게
 
 @socketio.on('sensor_name', namespace='/profile')
