@@ -35,21 +35,18 @@ TEST_JSON = {
 #for Test
 PROFILE = None
 
-class Singleton(type):
-    def __init__(cls, name, bases, dict):
-        super(Singleton, cls).__init__(name, bases, dict)
-        cls.instance = None 
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
 
-    def __call__(cls,*args,**kw):
-        if cls.instance is None:
-            cls.instance = super(Singleton, cls).__call__(*args, **kw)
-        return cls.instance
-
-
-class RevolutionPi(Singleton):
+@singleton
+class RevolutionPi:
 
     def __init__(self, profile_path):
-        __metaclass__ = Singleton
         self._profile = get_profile(profile_path)
         self.image_path = self._profile.get("IMAGPATH")
         self.sensor_profile = self._profile.get("sensor_list")
