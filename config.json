@@ -9,7 +9,7 @@
     "data_information" : {
         "InputValue_1" : {
             "originalRange" : [4000, 20000],
-            "changedRange" : [4, 20]
+            "changedRange" : [0, 500]
         },
         "InputValue_2" : {
             "originalRange" : [4000, 20000],
