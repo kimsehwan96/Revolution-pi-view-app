@@ -35,13 +35,18 @@ TEST_JSON = {
 #for Test
 PROFILE = None
 
-class RevolutionPi:
+class Singleton:
 
-    def __new__(self):
-        if not hasattr(self, 'instance'):
-            self.instance = super( Singleton, self).__new__(self)
-            return self.instance
+     def __new__(self):
 
+         if not hasattr(self, 'instance'):
+
+               self.instance = super( Singleton, self).__new__(self)
+
+               return self.instance
+
+
+class RevolutionPi(Singleton):
 
     def __init__(self, profile_path):
         self._profile = get_profile(profile_path)
