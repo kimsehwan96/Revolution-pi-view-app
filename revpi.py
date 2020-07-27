@@ -49,6 +49,7 @@ class RevolutionPi:
     def get_data(self):
         sensor_list = list(self.sensor_profile.keys())
         rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
+        rev.cycletime = 1000
         IO = rev.io
         rev_data = [0]*len(sensor_list)  
         for idx in range(len(sensor_list)):
