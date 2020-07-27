@@ -19,7 +19,7 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-revpi = RevolutionPi('config.json')
+revpi = RevolutionPi()
 
 
 @app.route('/')
