@@ -64,11 +64,10 @@ class RevolutionPi:
         rev_data = [0]*len(sensor_list)  
         for idx in range(len(sensor_list)):
             rev_data[idx] = getattr(IO, sensor_list[idx]).value
-        
-        return rev_data #list
+        self.before_buffer = rev_data #list
 
     def data_normalization(self):
-        self.before_buffer = self.get_data()
+        self.get_data()
         self.after_buffer = []
         profile = self.normalization_profile
 
