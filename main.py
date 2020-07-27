@@ -5,10 +5,11 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 from time import sleep
 from flask_cors import CORS
-from revpi import get_data
-from util import get_profile, get_senosr_names
+from util import get_profile, get_sensor_names
+from revpi import RevolutionPi
 import random
 import threading
+import traceback
 
 async_mode = None
 app = Flask(__name__)
@@ -18,6 +19,8 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
+revpi = RevolutionPi('config.json')
+
 
 @app.route('/')
 def index():
@@ -25,13 +28,19 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    profile = get_profile('config.json')
-    emit('rtdata', {'data':get_data(profile)})
+    try:
+        emit('rtdata', {'data':revpi.data_normalization()})
+    except Exception as e:
+        print("error occured when emitting sensor data :", traceback.format_exc())
     sleep(1) #TODO: config 파일에서 이 내용을 설정 할 수 있게
 
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
-    emit('sensor_name', {'name' : get_senosr_names('config.json')})
+    try:
+        sensor_profile = get_sensor_names('config.json')
+    except Exception as e:
+        print("error occured when emmiting sensor profile :", traceback.format_exc())
+    emit('sensor_name', {'name' : sensor_profile})
 
 @app.errorhandler(404) 
 def page_not_found(error): 
