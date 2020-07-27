@@ -19,10 +19,7 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-
-def get_data():
-    revpi = RevolutionPi()
-    return revpi.data_normalization()
+revpi = RevolutionPi()
 
 @app.route('/')
 def index():
@@ -30,7 +27,9 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    emit('rtdata', {'data':get_data()})
+    #emit('rtdata', {'data':get_data()})
+    revpi.data_normalization()
+    emit('rtdata', {'data':revpi.after_buffer})
     print("number of thread : ", threading.active_count())
 
 @socketio.on('sensor_name', namespace='/profile')

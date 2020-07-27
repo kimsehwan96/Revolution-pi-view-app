@@ -80,8 +80,6 @@ class RevolutionPi:
             processed_data = self.before_buffer[i] * n + change_start - input_start * n
             self.after_buffer.append(float(round(processed_data,2)))
 
-        return self.after_buffer
-
     #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
 if __name__ == "__main__":
