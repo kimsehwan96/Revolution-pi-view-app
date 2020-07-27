@@ -19,8 +19,10 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-revpi = RevolutionPi()
 
+def get_data():
+    revpi = RevolutionPi()
+    return revpi.data_normalization()
 
 @app.route('/')
 def index():
@@ -28,9 +30,8 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    data = revpi.data_normalization()
     try:
-        emit('rtdata', {'data':data})
+        emit('rtdata', {'data':get_data()})
         print("number of thread : ", threading.active_count())
     except Exception as e:
         print("error occured when emitting sensor data :", traceback.format_exc())

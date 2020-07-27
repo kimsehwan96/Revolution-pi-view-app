@@ -30,6 +30,8 @@ def chart():
 def push_values(msg):
     emit('rtdata', {'data':making_number()})
     print("number of threads :", threading.active_count())
+    print("id of making_number() : ", id(making_number()))
+    
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
     emit('sensor_name', {'name' : get_sensor_names('config.json')})
