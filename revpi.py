@@ -35,20 +35,17 @@ TEST_JSON = {
 #for Test
 PROFILE = None
 
-class Singleton:
-
-     def __new__(self):
-
-         if not hasattr(self, 'instance'):
-
-               self.instance = super( Singleton, self).__new__(self)
-
-               return self.instance
-
+class Singleton(object):
+  _instance = None
+  def __new__(class_, *args, **kwargs):
+    if not isinstance(class_._instance, class_):
+        class_._instance = object.__new__(class_, *args, **kwargs)
+    return class_._instance
 
 class RevolutionPi(Singleton):
 
     def __init__(self, profile_path):
+        super().__init__()
         self._profile = get_profile(profile_path)
         self.image_path = self._profile.get("IMAGPATH")
         self.sensor_profile = self._profile.get("sensor_list")
