@@ -11,7 +11,7 @@ import random
 import threading
 import traceback
 
-async_mode = "threading" #for buffer flushing
+async_mode = None #for buffer flushing
 app = Flask(__name__) 
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*', port=9999)
@@ -19,7 +19,7 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
-revpi = RevolutionPi('config.json')
+
 
 
 @app.route('/')
@@ -28,8 +28,10 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
+    revpi = RevolutionPi('config.json')
+    data = revpi.data_normalization()
     try:
-        emit('rtdata', {'data':revpi.data_normalization()})
+        emit('rtdata', {'data':data})
         print("number of thread : ", threading.active_count())
     except Exception as e:
         print("error occured when emitting sensor data :", traceback.format_exc())

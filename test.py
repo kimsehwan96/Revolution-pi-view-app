@@ -5,11 +5,11 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 from time import sleep
 from flask_cors import CORS
-from util import get_senosr_names
+from util import get_sensor_names
 import random
 import threading
 
-async_mode = None
+async_mode = None#"threading"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*', port=9999)
@@ -29,10 +29,10 @@ def chart():
 @socketio.on('request', namespace='/data')
 def push_values(msg):
     emit('rtdata', {'data':making_number()})
-
+    print("number of threads :", threading.active_count())
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
-    emit('sensor_name', {'name' : get_senosr_names('config.json')})
+    emit('sensor_name', {'name' : get_sensor_names('config.json')})
 
     
 
