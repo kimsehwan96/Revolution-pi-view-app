@@ -20,8 +20,8 @@
             "changedRange" : [4, 20]
         },
         "RTDValue_1" : {
-            "originalRange" : [0, 10000],
-            "changedRange" : [0, 1000]
+            "originalRange" : [0, 20000],
+            "changedRange" : [0, 2000]
         }
     }
 } 
