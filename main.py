@@ -11,8 +11,8 @@ import random
 import threading
 import traceback
 
-async_mode = None
-app = Flask(__name__)
+async_mode = "threading" #for buffer flushing
+app = Flask(__name__) 
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*', port=9999)
 thread = None
@@ -30,6 +30,7 @@ def index():
 def push_values(msg):
     try:
         emit('rtdata', {'data':revpi.data_normalization()})
+        print("number of thread : ", threading.active_count())
     except Exception as e:
         print("error occured when emitting sensor data :", traceback.format_exc())
     sleep(1) #TODO: config 파일에서 이 내용을 설정 할 수 있게
