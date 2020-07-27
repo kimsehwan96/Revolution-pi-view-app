@@ -30,12 +30,8 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    try:
-        emit('rtdata', {'data':get_data()})
-        print("number of thread : ", threading.active_count())
-    except Exception as e:
-        print("error occured when emitting sensor data :", traceback.format_exc())
-    sleep(1) #TODO: config 파일에서 이 내용을 설정 할 수 있게
+    emit('rtdata', {'data':get_data()})
+    print("number of thread : ", threading.active_count())
 
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
