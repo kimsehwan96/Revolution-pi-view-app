@@ -55,15 +55,15 @@ class RevolutionPi:
         self.sampling_time = 0.02 #20ms
         self.before_buffer = []
         self.after_buffer = []
+        self.rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
+        self.rev.cycletime = 1000
+        self.IO = self.rev.io
     
     def get_data(self):
         sensor_list = list(self.sensor_profile.keys())
-        rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
-        rev.cycletime = 1000
-        IO = rev.io
         rev_data = [0]*len(sensor_list)  
         for idx in range(len(sensor_list)):
-            rev_data[idx] = getattr(IO, sensor_list[idx]).value
+            rev_data[idx] = getattr(self.IO, sensor_list[idx]).value
         self.before_buffer = rev_data #list
 
     def data_normalization(self):
