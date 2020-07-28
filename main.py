@@ -27,15 +27,14 @@ def index():
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
-    #emit('rtdata', {'data':get_data()})
     revpi.data_normalization()
     emit('rtdata', {'data':revpi.after_buffer})
-    print("number of thread : ", threading.active_count())
+    #print("number of thread : ", threading.active_count())
 
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
     try:
-        sensor_profile = get_sensor_names('config.json')
+        sensor_profile = get_sensor_names('/home/pi/ksg_edge_deploy/socket_project/config.json')
     except Exception as e:
         print("error occured when emmiting sensor profile :", traceback.format_exc())
     emit('sensor_name', {'name' : sensor_profile})
@@ -44,7 +43,6 @@ def push_profile(msg):
 #def page_not_found(error): 
 #    return render_template('index.html')
 #404에러 발생할 경우 (page not found) 메인 페이지로 전환
-
 
 #TODO: request는 1초에 한번씩 들어옴, request요청이 들어왔을 때, 센서 개수만큼의 데이터를 보내줘야함 (array로)
 # 'data' : [데이터1번, 2번, 3번, 4번] -> config.json의 센서 리스트 순서대로

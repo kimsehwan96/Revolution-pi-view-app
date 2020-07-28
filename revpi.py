@@ -31,7 +31,6 @@ TEST_JSON = {
     }
 } 
 
-
 #for Test
 PROFILE = None
 
@@ -79,8 +78,6 @@ class RevolutionPi:
             n = (change_end - change_start) / (input_end - input_start)
             processed_data = self.before_buffer[i] * n + change_start - input_start * n
             self.after_buffer.append(float(round(processed_data,2)))
-
-    #TODO: gateway 온도/ cpu 상태 모니터링 시스템까지.
 
 if __name__ == "__main__":
     rev = RevolutionPi()

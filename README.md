@@ -62,10 +62,14 @@ client는 다시 `binder.on('rtdata', function().....` 으로 'rtdata 주제로 
   
 .innerHTML 에 실시간 변화하는 값을 넣어서 구현 -> 더 나은 방법 찾아보기
 
-# highchar Demo
+# 실제 앱 동작
 
-`127.0.0.1:9999/chart` 로 접근  
-highchart 라이브러리 사용을 위해서는  
-jquery 먼저 불러와야 한다.  
+`$python3 main.py` 를 이용해서 웹서버를 구동하면 된다. 
 
-TODO: 실시간 데이터 chart 화
+`revolution pi` 의 경우 `/etc/xdg/lxsession/LXDE-pi/autostart` 파일을 아래와 같이 수정한다.
+
+```shell
+#!/bin/bash
+@/usr/local/bin/python3 ${main.py가 있는 경로}/main.py
+@/usr/bin/chromium-browser --kiosk http://127.0.0.1:9999
+```
