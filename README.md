@@ -73,3 +73,8 @@ client는 다시 `binder.on('rtdata', function().....` 으로 'rtdata 주제로 
 @/usr/local/bin/python3 ${main.py가 있는 경로}/main.py
 @/usr/bin/chromium-browser --kiosk http://127.0.0.1:9999
 ```
+
+그 외 필요한 것들
+
+`$sudo apt-get install -y chromium-browser ibus-hangul fonts-unfonts-core`
+
