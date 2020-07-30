@@ -1,70 +1,89 @@
-Highcharts.chart('container', {
-
+$(document).ready(function() {
+    Highcharts.chart('container', {
+    chart: {
+      type: 'spline',
+      animation: Highcharts.svg, // don't animate in old IE
+      marginRight: 10,
+      events: {
+        load: function () {
+  
+          // set up the updating of the chart each second
+          var series = this.series[0];
+          setInterval(function () {
+            var x = (new Date()).getTime(), // current time
+              y = Math.random();
+            series.addPoint([x, y], true, true);
+          }, 1000);
+        }
+      }
+    },
+  
+    time: {
+      useUTC: false
+    },
+  
     title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
+      text: 'Live random data'
     },
-
-    subtitle: {
-        text: 'Source: thesolarfoundation.com'
-    },
-
-    yAxis: {
-        title: {
-            text: 'Number of Employees'
+  
+    accessibility: {
+      announceNewData: {
+        enabled: true,
+        minAnnounceInterval: 15000,
+        announcementFormatter: function (allSeries, newSeries, newPoint) {
+          if (newPoint) {
+            return 'New point added. Value: ' + newPoint.y;
+          }
+          return false;
         }
+      }
     },
-
+  
     xAxis: {
-        accessibility: {
-            rangeDescription: 'Range: 2010 to 2017'
-        }
+      type: 'datetime',
+      tickPixelInterval: 150
     },
-
+  
+    yAxis: {
+      title: {
+        text: 'Value'
+      },
+      plotLines: [{
+        value: 0,
+        width: 1,
+        color: '#808080'
+      }]
+    },
+  
+    tooltip: {
+      headerFormat: '<b>{series.name}</b><br/>',
+      pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+    },
+  
     legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
+      enabled: false
     },
-
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-            pointStart: 2010
-        }
+  
+    exporting: {
+      enabled: false
     },
-
+  
     series: [{
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-    }, {
-        name: 'Manufacturing',
-        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-    }, {
-        name: 'Sales & Distribution',
-        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-    }, {
-        name: 'Project Development',
-        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-    }, {
-        name: 'Other',
-        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-    }],
-
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
-    }
-
+      name: 'Random data',
+      data: (function () {
+        // generate an array of random data
+        var data = [],
+          time = (new Date()).getTime(),
+          i;
+  
+        for (i = -19; i <= 0; i += 1) {
+          data.push({
+            x: time + i * 1000,
+            y: Math.random()
+          });
+        }
+        return data;
+      }())
+    }]
+  });
 });
