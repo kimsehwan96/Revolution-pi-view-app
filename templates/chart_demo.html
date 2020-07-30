@@ -45,6 +45,7 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <!--<script type = "text/javascript" src = "{{ url_for('static', filename='js/chart_test.js') }}"></script> -->
+<!-- Hichart 사용시, jquery를 이용해 document ready 상태 체크 하지 않을 경우 Highchar 에러 발생함 (에러코드 13) -->
 <script>
 
     $(document).ready(function() {
