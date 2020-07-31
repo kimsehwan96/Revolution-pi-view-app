@@ -1,3 +1,17 @@
+var y_data;
+var binder = io("http://localhost:9999/data");
+setInterval(function() {
+binder.emit('request', {'time': Date.now()});
+}, 1000);
+
+setInterval( function() {
+binder.on('rtdata', function(data) {
+console.log('binder buffered: ', data)
+y_data = data.data[0]
+console.log(y_data.data)
+});} ,1000);
+
+
 $(document).ready(function() {
     Highcharts.chart('container', {
     chart: {
@@ -8,10 +22,14 @@ $(document).ready(function() {
         load: function () {
   
           // set up the updating of the chart each second
+       
+          var binder = io("http://localhost:9999/data");
           var series = this.series[0];
           setInterval(function () {
             var x = (new Date()).getTime(), // current time
-              y = Math.random();
+              //y = Math.random();
+              y = y_data
+              console.log(y_data);
             series.addPoint([x, y], true, true);
           }, 1000);
         }
@@ -79,7 +97,8 @@ $(document).ready(function() {
         for (i = -19; i <= 0; i += 1) {
           data.push({
             x: time + i * 1000,
-            y: Math.random()
+            //y: Math.random()
+            y: y_data
           });
         }
         return data;
