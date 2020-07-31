@@ -38,7 +38,7 @@
   background: #f1f7ff;
 }
 </style>
-
+<script type = "text/javascript" src = "{{ url_for('static', filename='js/socket.io-1.2.0.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -47,6 +47,20 @@
 <!--<script type = "text/javascript" src = "{{ url_for('static', filename='js/chart_test.js') }}"></script> -->
 <!-- Hichart 사용시, jquery를 이용해 document ready 상태 체크 하지 않을 경우 Highchar 에러 발생함 (에러코드 13) -->
 <script>
+
+    var y_data;
+    var binder = io("http://localhost:9999/data");
+    setInterval(function() {
+    binder.emit('request', {'time': Date.now()});
+    }, 1000);
+
+    setInterval( function() {
+    binder.on('rtdata', function(data) {
+    console.log('binder buffered: ', data)
+    y_data = data.data[0]
+    console.log(y_data.data)
+    });} ,1000);
+    
 
     $(document).ready(function() {
         Highcharts.chart('container', {
@@ -58,10 +72,14 @@
             load: function () {
       
               // set up the updating of the chart each second
+           
+              var binder = io("http://localhost:9999/data");
               var series = this.series[0];
               setInterval(function () {
                 var x = (new Date()).getTime(), // current time
-                  y = Math.random();
+                  //y = Math.random();
+                  y = y_data
+                  console.log(y_data);
                 series.addPoint([x, y], true, true);
               }, 1000);
             }
@@ -129,7 +147,8 @@
             for (i = -19; i <= 0; i += 1) {
               data.push({
                 x: time + i * 1000,
-                y: Math.random()
+                //y: Math.random()
+                y: y_data
               });
             }
             return data;
