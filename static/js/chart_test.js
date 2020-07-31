@@ -41,7 +41,7 @@ $(document).ready(function() {
     },
   
     title: {
-      text: 'Live random data'
+      text: 'data From flask api -socket.io- '
     },
   
     accessibility: {
