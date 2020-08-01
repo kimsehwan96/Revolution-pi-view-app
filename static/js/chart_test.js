@@ -1,5 +1,6 @@
-var y_data;
-var binder = io("http://localhost:9999/data");
+var y_data; //global var
+
+var binder = io("http://localhost:9999/data"); //for socket io 
 setInterval(function() {
 binder.emit('request', {'time': Date.now()});
 }, 1000);
@@ -11,7 +12,7 @@ y_data = data.data[0]
 console.log(y_data.data)
 });} ,1000);
 
-
+//render char when highchart is ready
 $(document).ready(function() {
     Highcharts.chart('container', {
     chart: {
@@ -21,9 +22,7 @@ $(document).ready(function() {
       events: {
         load: function () {
   
-          // set up the updating of the chart each second
-       
-          var binder = io("http://localhost:9999/data");
+          // set up the updating of the chart each second      
           var series = this.series[0];
           setInterval(function () {
             var x = (new Date()).getTime(), // current time
@@ -79,17 +78,16 @@ $(document).ready(function() {
     },
   
     legend: {
-      enabled: false
+      enabled: true
     },
   
     exporting: {
-      enabled: false
+      enabled: true
     },
   
     series: [{
-      name: 'Random data',
+      name: 'Random data from socket io',
       data: (function () {
-        // generate an array of random data
         var data = [],
           time = (new Date()).getTime(),
           i;
