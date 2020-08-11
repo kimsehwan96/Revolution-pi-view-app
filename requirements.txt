@@ -1,4 +1,4 @@
-flask
-flask_socketio
-flask_cors
-revpimodio2
+Flask==1.1.1
+Flask-Cors==3.0.8
+Flask-SocketIO==4.3.1
+revpimodio2==2.5.1
