@@ -1,6 +1,6 @@
 from threading import Lock
 from flask import Flask, render_template, session, request, \
-    copy_current_request_context
+    copy_current_request_context, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 from time import sleep
@@ -8,6 +8,7 @@ from flask_cors import CORS
 from util import get_sensor_names
 import random
 import threading
+
 
 async_mode = None#"threading"
 app = Flask(__name__)
@@ -25,6 +26,10 @@ def index():
 @app.route('/chart')
 def chart():
     return render_template('chart_demo.html')
+
+@app.route('/api/data', method=['GET'])
+def get_api_data():
+    return jsonify(making_number())
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
