@@ -14,7 +14,7 @@ plugins:
 custom:
   accountId: 671221010754 # replace this with your accountId
   appSync:
-    # name:  # defaults to api
+    name: dev-api
     # apiId # only required for update-appsync
     authenticationType: API_KEY # API_KEY is also supported
     #userPoolConfig:
@@ -31,7 +31,7 @@ custom:
         response: "response.vtl"
 
     schema: schema.graphql
-    serviceRole: "AppSyncServiceRole"
+    serviceRole: "AppSyncServiceRole-dev"
     dataSources:
       - type: AWS_LAMBDA
         name: Lambda

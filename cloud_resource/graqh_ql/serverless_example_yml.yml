@@ -1,0 +1,169 @@
+custom:
+  appSync:
+    name:  # defaults to api
+    # apiKey # only required for update-appsync/delete-appsync
+    authenticationType: API_KEY or AWS_IAM or AMAZON_COGNITO_USER_POOLS or OPENID_CONNECT
+    schema: # schema file or array of files to merge, defaults to schema.graphql
+    # Caching options. Disabled by default
+    # read more at https://aws.amazon.com/blogs/mobile/appsync-caching-transactions/
+    # and https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appsync-apicache.html
+    caching:
+      behavior: FULL_REQUEST_CACHING # or PER_RESOLVER_CACHING. Required
+      ttl: 3600 # The TTL of the cache. Optional. Default: 3600
+      atRestEncryption: # Bool, Optional. Enable at rest encryption. disabled by default.
+      transitEncryption: # Bool, Optional. Enable transit encryption. disabled by default.
+      type: 'T2_SMALL' # Cache instance size. Optional. Default: 'T2_SMALL'
+    # if AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      awsRegion: # defaults to provider region
+      defaultAction: # required # ALLOW or DENY
+      userPoolId: # required # user pool ID
+      appIdClientRegex: # optional
+    # if OPENID_CONNECT
+    openIdConnectConfig:
+      issuer:
+      clientId:
+      iatTTL:
+      authTTL:
+    # Array of additional authentication providers
+    additionalAuthenticationProviders:
+      - authenticationType: API_KEY
+      - authenticationType: AWS_IAM
+      - authenticationType: OPENID_CONNECT
+        openIdConnectConfig:
+          issuer:
+          clientId:
+          iatTTL:
+          authTTL:
+      - authenticationType: AMAZON_COGNITO_USER_POOLS
+        userPoolConfig:
+          awsRegion: # defaults to provider region
+          userPoolId: # required # user pool ID
+          appIdClientRegex: # optional
+    logConfig:
+      loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
+      level: ERROR # Logging Level: NONE | ERROR | ALL
+      excludeVerboseContent: false
+    mappingTemplatesLocation: # defaults to mapping-templates
+    mappingTemplates:
+      - dataSource: # data source name
+        type: # type name in schema (e.g. Query, Mutation, Subscription, or a custom type e.g. User)
+        field: getUserInfo
+        # kind: UNIT (default, not required) or PIPELINE (required for pipeline resolvers)
+        functions: # array of functions if kind === 'PIPELINE'
+          - # function name
+        request: # request mapping template name | defaults to {type}.{field}.request.vtl
+        response: # response mapping template name | defaults to {type}.{field}.response.vtl
+        # When caching is enaled with `PER_RESOLVER_CACHING`,
+        # the caching options of the resolver.
+        # Disabled by default.
+        # Accepted values:
+        # - `true`: cache enabled with global `ttl` and default `keys`
+        # - an object with the following keys:
+        #    - ttl: The ttl of this particular resolver. Optional. Defaults to global ttl
+        #    - keys: The keys to use for the cache. Optionnal. Defaults to a hash of the
+        #            $context.arguments and $context.identity
+        caching:
+          keys: # array. A list of VTL variables to use as cache key.
+            - "$context.identity.sub"
+            - "$context.arguments.id"
+          ttl: 1000 # override the ttl for this resolver. (default comes from global config)
+
+      - ${file({fileLocation}.yml)} # link to a file with arrays of mapping templates
+    functionConfigurations:
+      - name: # function name
+        dataSource: # data source name
+        request: # request mapping template name | defaults to {name}.request.vtl
+        response: # reponse mapping template name | defaults to {name}.response.vtl
+    dataSources:
+      - type: NONE
+        name: none
+      - type: AMAZON_DYNAMODB
+        name: # data source name
+        description: # DynamoDB Table Description
+        config:
+          tableName: { Ref: MyTable } # Where MyTable is a dynamodb table defined in Resources
+          serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
+          iamRoleStatements: # custom IAM Role statements for this DataSource. Ignored if `serviceRoleArn` is present. Auto-generated if both `serviceRoleArn` and `iamRoleStatements` are omitted
+            - Effect: "Allow"
+              Action:
+                - "dynamodb:GetItem"
+              Resource:
+                - "arn:aws:dynamodb:{REGION}:{ACCOUNT_ID}:myTable"
+                - "arn:aws:dynamodb:{REGION}:{ACCOUNT_ID}:myTable/*"
+          # Versioned DataSource configuration
+          versioned: false # (default, not required)
+          # When you enable versioning on a DynamoDB data source, you specify the following fields
+          # read more at https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-appsync-datasource-deltasyncconfig.html
+          # deltaSyncConfig:
+          #   baseTableTTL: 0 # (default, not required) # The amount of time (in minutes) items should be kept in the base table when deleted. Set to 0 to delete items in the base table immediately
+          #   deltaSyncTableName: { Ref: MyTableDelta } # required # The Delta Sync table name
+          #   deltaSyncTableTTL: 60 # (default, not required) # The amount of time (in minutes) the delta sync table will keep track of changes
+
+          region: # Overwrite default region for this data source
+      - type: RELATIONAL_DATABASE
+        name: # data source name
+        description: # data source description
+        config:
+          dbClusterIdentifier: { Ref: RDSCluster } # The identifier for RDSCluster. Where RDSCluster is the cluster defined in Resources
+          awsSecretStoreArn: { Ref: RDSClusterSecret } # The RDSClusterSecret ARN. Where RDSClusterSecret is the cluster secret defined in Resources
+          serviceRoleArn: { Fn::GetAtt: [RelationalDbServiceRole, Arn] } # Where RelationalDbServiceRole is an IAM role defined in Resources
+          databaseName: # optional database name
+          schema: # optional database schema
+          iamRoleStatements: # custom IAM Role statements for this DataSource. Ignored if `serviceRoleArn` is present. Auto-generated if both `serviceRoleArn` and `iamRoleStatements` are omitted
+            - Effect: "Allow"
+              Action:
+                - "rds-data:DeleteItems"
+                - "rds-data:ExecuteSql"
+                - "rds-data:ExecuteStatement"
+                - "rds-data:GetItems"
+                - "rds-data:InsertItems"
+                - "rds-data:UpdateItems"
+              Resource:
+                - "arn:aws:rds:{REGION}:{ACCOUNT_ID}:cluster:mydbcluster"
+                - "arn:aws:rds:{REGION}:{ACCOUNT_ID}:cluster:mydbcluster:*"
+            - Effect: "Allow"
+              Action:
+                - "secretsmanager:GetSecretValue"
+              Resource:
+                - "arn:aws:secretsmanager:{REGION}:{ACCOUNT_ID}:secret:mysecret"
+                - "arn:aws:secretsmanager:{REGION}:{ACCOUNT_ID}:secret:mysecret:*"
+
+          region: # Overwrite default region for this data source
+      - type: AMAZON_ELASTICSEARCH
+        name: # data source name
+        description: 'ElasticSearch'
+        config:
+          domain: # a reference to a resource of type `AWS::Elasticsearch::Domain`
+          endpoint: # required if `domain` not provided. Ex: "https://{XXX}.{REGION}.es.amazonaws.com"
+          serviceRoleArn: { Fn::GetAtt: [AppSyncESServiceRole, Arn] } # Where AppSyncESServiceRole is an IAM role defined in Resources
+          iamRoleStatements: # custom IAM Role statements for this DataSource. Ignored if `serviceRoleArn` is present. Auto-generated if both `serviceRoleArn` and `iamRoleStatements` are omitted
+            - Effect: "Allow"
+              Action:
+                - "es:ESHttpGet"
+              Resource:
+                - "arn:aws:es:{REGION}:{ACCOUNT_ID}:{DOMAIN}"
+      - type: AWS_LAMBDA
+        name: # data source name
+        description: 'Lambda DataSource'
+        config:
+          functionName: graphql # The function name in your serverless.yml. Ignored if lambdaFunctionArn is provided.
+          lambdaFunctionArn: { Fn::GetAtt: [GraphqlLambdaFunction, Arn] } # Where GraphqlLambdaFunction is the lambda function cloudformation resource created by serverless for the serverless function named graphql
+          serviceRoleArn: { Fn::GetAtt: [AppSyncLambdaServiceRole, Arn] } # Where AppSyncLambdaServiceRole is an IAM role defined in Resources
+          iamRoleStatements: # custom IAM Role statements for this DataSource. Ignored if `serviceRoleArn` is present. Auto-generated if both `serviceRoleArn` and `iamRoleStatements` are omitted
+            - Effect: "Allow"
+              Action:
+                - "lambda:invokeFunction"
+              Resource:
+                - "arn:aws:lambda:{REGION}:{ACCOUNT_ID}:myFunction"
+                - "arn:aws:lambda:{REGION}:{ACCOUNT_ID}:myFunction:*"
+      - type: HTTP
+        name: # data source name
+        description: 'Http endpoint'
+        config:
+          endpoint: # required # "https://{DOMAIN}/{PATH}"
+      - ${file({dataSources}.yml)} # link to a file with an array or object of datasources
+    substitutions: # allows to pass variables from here to velocity templates
+      # ${exampleVar1} will be replaced with given value in all mapping templates
+      exampleVar1: "${self:service.name}"
+      exampleVar2: {'Fn::ImportValue': 'Some-external-stuff'}
