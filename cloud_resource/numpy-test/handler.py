@@ -5,7 +5,8 @@ def main(event, context):
 
     print('Your numpy arrary : ')
     print(a)
-
+    print("this is evnet {}".format(event))
+    print("this is context {}".format(context))
 if __name__ == "__main__":
     main('','')
 

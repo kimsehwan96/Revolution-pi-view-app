@@ -1,0 +1,78 @@
+service: serverless-graphql-appsync-lda-dev
+
+frameworkVersion: ">=1.21.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: ap-northeast-2
+
+plugins:
+  - serverless-appsync-plugin
+
+custom:
+  accountId: 671221010754 # replace this with your accountId
+  appSync:
+    # name:  # defaults to api
+    # apiId # only required for update-appsync
+    authenticationType: API_KEY # API_KEY is also supported
+    #userPoolConfig:
+    #  awsRegion: us-east-1 # required # region
+    #  defaultAction: ALLOW
+    #  userPoolId: us-east-1_xxxxxxxxx # replace this with your Cognito User Pool Id
+    # region: # defaults to provider region
+    mappingTemplatesLocation: templates
+    mappingTemplates:
+      - dataSource: Lambda
+        type: Query
+        field: get
+        request: "request.vtl"
+        response: "response.vtl"
+
+    schema: schema.graphql
+    serviceRole: "AppSyncServiceRole"
+    dataSources:
+      - type: AWS_LAMBDA
+        name: Lambda
+        description: 'Lambda DataSource'
+        config:
+          lambdaFunctionArn: "arn:aws:lambda:ap-northeast-2:${self:custom.accountId}:function:serverless-graphql-appsync-lda-dev-graphql"
+          serviceRoleArn: "arn:aws:iam::${self:custom.accountId}:role/Lambda-${self:custom.appSync.serviceRole}"
+  serverless-offline:
+    port: 4000
+  webpackIncludeModules: true
+
+functions:
+  graphql:
+    handler: handler.handler
+
+resources:
+  Resources:
+    AppSyncServiceRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: "Lambda-AppSyncServiceRole"
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Principal:
+                Service:
+                  - "appsync.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Policies:
+          -
+            PolicyName: "Lambda-AppSyncServiceRole-Policy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                -
+                  Effect: "Allow"
+                  Action:
+                    - "lambda:invokeFunction"
+                  Resource:
+                    - "arn:aws:lambda:ap-northeast-2:*:function:serverless-graphql-appsync-lda-dev-graphql"
+                    - "arn:aws:lambda:ap-northeast-2:*:function:serverless-graphql-appsync-lda-dev-graphql:*"
