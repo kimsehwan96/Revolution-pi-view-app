@@ -7,6 +7,19 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import socketio from 'socket.io-client';
+
+
+const binder = socketio.connect('http://localhost:9999/data');
+
+(() => {
+    binder.emit('init', { name: 'start' });
+  
+    binder.on('welcome', (msg) => {
+      console.log(msg);
+    });
+    
+})();
 
 const useStyles = makeStyles({
   table: {
@@ -18,11 +31,18 @@ function createData(name, value) {
   return {name, value};
 }
 
+function get_rt_data(data){
+  binder.on('rtdata', function (data){
+    console.log(data)
+  });
+  return data;
+};
+
 const rows = [
-  createData('차압계', 159),
-  createData('배풍기', 237),
-  createData('송풍기', 262),
-  createData('온도', 305),
+  createData('차압계', get_rt_data.data[0]),
+  createData('배풍기', get_rt_data.data[1]),
+  createData('송풍기', get_rt_data.data[2]),
+  createData('온도', get_rt_data.data[3]),
 ];
 
 export default function App() {
