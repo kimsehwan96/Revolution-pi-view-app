@@ -3,7 +3,7 @@ var y_data_1; //global var
 var y_data_2; //global var
 var y_data_3; //global var
 
-var binder = io("http://localhost:9999/data"); //for socket io 
+var binder = io("http://localhost:9999/data"); // 현재 socket io를 이용해 실시간 데이터를 받고 있지만 추후에는 API를 실시간으로 찔러서 받는것으로 -> fetch 이용.
 setInterval(function() {
 binder.emit('request', {'time': Date.now()});
 }, 1000);
@@ -18,16 +18,15 @@ y_data_3 = data.data[3]
 console.log(y_data.data)
 });} ,1000);
 
-//render char when highchart is ready
+//render char when highchart is ready -> jquery 이용해서 HighChart 가 준비되었을 때 아래 로직이 돎 -> 그렇지 않으면 오류 뿜어냄
 $(document).ready(function() {
-    Highcharts.chart('container', {
+    Highcharts.chart('container', { // Html 상 id가 container 인 태그에 이 차트를 랜더링 할것임.
     chart: {
       type: 'spline',
-      animation: Highcharts.svg, // don't animate in old IE
+      animation: Highcharts.svg, // don't animate in old IE -> 차트 실시간 데이터 업데이트시 에니메이션 할 것인지 아닌지 -> 안하니까 개이상함
       marginRight: 10,
-      events: {
+      events: { // 이 evnets 옵션 안에 실시간 데이터 처리를 위한 옵션들이 들어가는 듯. 
         load: function () {
-  
           // set up the updating of the chart each second      
           var series_1 = this.series[0];
           var series_2 = this.series[1];
@@ -39,8 +38,7 @@ $(document).ready(function() {
           setInterval(function () {
             var x = (new Date()).getTime(), // current time
               //y = Math.random();
-            y = y_data
-            console.log("this is y", y);
+            y = y_data; // 이거 안쓰는데 지우면 에러남 해결 필요.
             series_1.addPoint([x, y_data], true, true);
             series_2.addPoint([x, y_data_1], true, true);
             series_3.addPoint([x, y_data_2], true, true);
@@ -55,17 +53,18 @@ $(document).ready(function() {
     },
   
     title: {
-      text: 'data From flask api -socket.io- '
+      text: ' 4 field real time data demo '
     },
 
     rangeSelector: {
       selected: 1
     },
   
+    
     accessibility: {
       announceNewData: {
         enabled: true,
-        minAnnounceInterval: 15000,
+        minAnnounceInterval: 150,
         announcementFormatter: function (allSeries, newSeries, newPoint) {
           if (newPoint) {
             return 'New point added. Value: ' + newPoint.y;
@@ -101,7 +100,7 @@ $(document).ready(function() {
     },
   
     exporting: {
-      enabled: true
+      enabled: true  //csv , png  등으로 추출하는 기능 (매우 유용)
     },
   
     series: [{
@@ -121,6 +120,10 @@ $(document).ready(function() {
         return data;
       }())
     },
+// series라는 배열 안의 옵션들인데... 위에서 events에서 this로 바인딩하는 그것인듯함.
+// 여기서 var data = [] 는 초기 데이터를 설정해주는 것인데 없는것으로 처리하기
+// data.push 이 밑에 구문은 솔직히 이해가 잘 안감.
+
     {
       name: 'Field_2',
       data: (function () {
