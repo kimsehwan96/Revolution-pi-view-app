@@ -21,3 +21,4 @@ PubSub.configure();
 * need to make aws iam policy for web application.
 * need to authenticate with cognito 
 
+* we should use react for using aws-amplify in real data handler -> we need to think about this
