@@ -3,13 +3,20 @@ import time
 import json
 import os 
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
-
+'''
 host = os.environ.get('MQTT_HOST')
 rootCAPath = os.environ.get('ROOT_CAPATH')
 certificatePath = os.environ.get('CERT_PATH')
 privatecerificatePath = os.environ.get('PRIVATE_CERT_PATH')
+'''
+
+host = 'a1vsp1vk10ucaw-ats.iot.ap-northeast-2.amazonaws.com'
+rootCAPath = 'certs/AmazonRootCA1.pem'
+certificatePath = 'certs/91cd1caf3f-certificate.pem.crt'
+privatecerificatePath = 'certs/91cd1caf3f-private.pem.key'
+
 port = 8883 # not websocket/ TLS SSL
-clientId = None 
+clientId = 'testUser'
 topic ='test/test'
 
 AllowedActions = ['both', 'publish', 'subscribe']
