@@ -26,10 +26,11 @@ def index():
 @app.route('/chart')
 def chart():
     return render_template('chart_demo.html')
-
+'''
 @app.route('/api/data', method=['GET'])
 def get_api_data():
     return jsonify(making_number())
+'''
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
