@@ -33,6 +33,7 @@ TEST_JSON = {
 
 #for Test
 PROFILE = None
+DIR = os.path.dirname(os.path.abspath('__file__')) + '/config.json'
 
 def singleton(cls):
     instances = {}
@@ -46,7 +47,7 @@ def singleton(cls):
 class RevolutionPi:
 
     def __init__(self):
-        self.profile_path = "/home/pi/ksg_edge_deploy/socket_project/config.json" #revpi edge path
+        self.profile_path = DIR #revpi edge path
         self._profile = get_profile(self.profile_path)
         self.image_path = self._profile.get("IMGPATH")
         self.sensor_profile = self._profile.get("sensor_list")

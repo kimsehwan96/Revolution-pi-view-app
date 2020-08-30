@@ -10,6 +10,7 @@ from revpi import RevolutionPi
 import random
 import threading
 import traceback
+import os
 
 async_mode = None #for buffer flushing
 app = Flask(__name__) 
@@ -20,6 +21,7 @@ thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
 revpi = RevolutionPi()
+DIR = os.path.dirname(os.path.abspath('__file__')) + '/config.json'
 
 @app.route('/')
 def index():
@@ -34,7 +36,7 @@ def push_values(msg):
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
     try:
-        sensor_profile = get_sensor_names('/home/pi/ksg_edge_deploy/socket_project/config.json')
+        sensor_profile = get_sensor_names(DIR)
     except Exception as e:
         print("error occured when emmiting sensor profile :", traceback.format_exc())
     emit('sensor_name', {'name' : sensor_profile})

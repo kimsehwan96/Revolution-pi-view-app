@@ -8,6 +8,7 @@ from flask_cors import CORS
 from util import get_sensor_names
 import random
 import threading
+import os
 
 
 async_mode = None#"threading"
@@ -18,6 +19,7 @@ thread = None
 thread_lock = Lock()
 CORS(app)
 TEST_VALUE = None
+DIR = os.path.dirname(os.path.abspath('__file__')) + '/config.json'
 
 @app.route('/')
 def index():
@@ -26,10 +28,11 @@ def index():
 @app.route('/chart')
 def chart():
     return render_template('chart_demo.html')
-
+'''
 @app.route('/api/data', method=['GET'])
 def get_api_data():
     return jsonify(making_number())
+'''
 
 @socketio.on('request', namespace='/data')
 def push_values(msg):
@@ -39,7 +42,7 @@ def push_values(msg):
     
 @socketio.on('sensor_name', namespace='/profile')
 def push_profile(msg):
-    emit('sensor_name', {'name' : get_sensor_names('config.json')})
+    emit('sensor_name', {'name' : get_sensor_names(DIR)})
 
     
 
