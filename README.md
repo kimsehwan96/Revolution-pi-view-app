@@ -8,8 +8,52 @@
 
 상기 명령어를 이용하여 필요한 패키지를 설치한다.
 
+# 실제 동작
+
+![realView](./images/realView.png)
+
+실제 greengrass Lambda 화 해서 IoT서비스로 배포한 화면 (로컬에서 코드 설치후 사용도 가능)
+
+* 실제 동작은 Revolution Pi라는 산업용 라즈베리 파이로부터 실제 센서 데이터를 입력 받는다.
+
+```python3
+import revpimodio2
+```
+
+* revpimodio2라는 라이브러리가 이 센서 데이터를 쉽게 접근하도록 도와준다. (그렇지 않으면 IOCTL을 직접 접근해야 함 -> Linux)
+
+```python3
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
+
+@singleton
+class RevolutionPi:
+
+    def __init__(self):
+        self.profile_path = DIR #revpi edge path
+        self._profile = get_profile(self.profile_path)
+        self.image_path = self._profile.get("IMGPATH")
+        self.sensor_profile = self._profile.get("sensor_list")
+        self.normalization_profile = self._profile.get("data_information")
+        self.sampling_time = 0.02 #20ms
+        self.before_buffer = []
+        self.after_buffer = []
+        self.rev = revpimodio2.RevPiModIO(autorefresh = True, procimg = self.image_path)
+        self.rev.cycletime = 1000
+        self.IO = self.rev.io
+```
+
+* revolution pi 라는 클래스를 생성, 생성될 때 profile 데이터를 저장한 경로와, 그 외 실제 revpimodio2를 쓰기위한 설정을 함.
+
+
 # 웹서버 실행 방법
 `$python3 test.py`
+`$python3 main.py` -> 실제 revolution pi 상에서만.
 
 웹브러우저 상에서 127.0.0.1:9999 로 접속 가능
 
@@ -34,19 +78,28 @@ socketio로 다시 emit하고, 주제는 'rtdata'이다. 데이터는 random.ran
 
 ```javascript
 
-    var binder = io("http://localhost:9999/data");
-      setInterval(function() {
-        binder.emit('request', {'time': Date.now()});
-      }, 1000);
-      binder.on('rtdata', function(data) {
-        console.log('binder buffered: ', data)
-        var target = document.querySelector('#value_1')
-        target.innerHTML = data.data
-      });
+var binder = io("http://localhost:9999/data");
+setInterval(function() {
+  binder.emit('request', {'time': Date.now()});
+}, 1000);
+
+setInterval( function() {
+binder.on('rtdata', function(data) {
+  console.log('binder buffered: ', data)
+  var target = document.getElementById('data_1')
+  var target_2 = document.getElementById('data_2')
+  var target_3 = document.getElementById('data_3')
+  var target_4 = document.getElementById('data_4')
+  console.log(target)
+  target.innerHTML = data.data[0] + '\nmmAQ'
+  target_2.innerHTML = data.data[1] + '\nA'
+  target_3.innerHTML = data.data[2] + '\nA'
+  target_4.innerHTML = data.data[3] + '\n℃'
+});} ,1000);
 
 ```
 
-socketio javascript로 구성되어있다. index.html 참고 -> TODO: CDN이 아닌 로컬에 socketio 관련 js 파일 배포 필요.
+socketio javascript로 구성되어있다. index.html 참고 -> TODO: CDN이 아닌 로컬에 socketio 관련 js 파일 배포 필요. (Done)
 
 binder라는 변수로 socketio, 네임스페이스는 '/data' 를 할당.
 
