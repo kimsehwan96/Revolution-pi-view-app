@@ -1,8 +1,30 @@
-import React from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import io from 'socket.io-client'
+
+
+const binder = io("http://localhost:9999/data");
+setInterval(function() {
+  binder.emit('request', {'time': Date.now()});
+}, 1000);
+
+
+setInterval( function() {
+  binder.on('rtdata', function(data) {
+    console.log('binder buffered: ', data)
+    var target = document.getElementById('data_1')
+    var target_2 = document.getElementById('data_2')
+    var target_3 = document.getElementById('data_3')
+    var target_4 = document.getElementById('data_4')
+    console.log(target)
+    target.innerHTML = data.data[0] + '\nmmAQ'
+    target_2.innerHTML = data.data[1] + '\nA'
+    target_3.innerHTML = data.data[2] + '\nA'
+    target_4.innerHTML = data.data[3] + '\n℃'
+  });} ,1000);
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(15)
   },
   subPaper: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(6),
     textAlign: 'center',
     color: theme.palette.text.secondary,
     height: 20
@@ -49,6 +71,13 @@ export default function App() {
           <Typography variant="body2" color="textSecondary" align="center">
               차압계
             </Typography>
+              <Grid item xs={12}>
+                <Paper className={classes.subPaper}>
+                <Typography variant="body2" color="textSecondary" align="center" id='data_1'>
+                    데이터
+                  </Typography>
+                </Paper>
+              </Grid>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -56,6 +85,13 @@ export default function App() {
         <Typography variant="body2" color="textSecondary" align="center">
               차압계
             </Typography>
+            <Grid item xs={12}>
+                <Paper className={classes.subPaper}>
+                <Typography variant="body2" color="textSecondary" align="center" id='data_2'>
+                    데이터
+                  </Typography>
+                </Paper>
+              </Grid>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -63,6 +99,13 @@ export default function App() {
         <Typography variant="body2" color="textSecondary" align="center">
               차압계
             </Typography>
+            <Grid item xs={12}>
+                <Paper className={classes.subPaper}>
+                <Typography variant="body2" color="textSecondary" align="center" id='data_3'>
+                    데이터
+                  </Typography>
+                </Paper>
+              </Grid>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -70,6 +113,13 @@ export default function App() {
         <Typography variant="body2" color="textSecondary" align="center">
               차압계
             </Typography>
+            <Grid item xs={12}>
+                <Paper className={classes.subPaper}>
+                <Typography variant="body2" color="textSecondary" align="center" id='data_4'>
+                    데이터
+                  </Typography>
+                </Paper>
+              </Grid>
           </Paper>
         </Grid>
       </Grid>    
