@@ -131,3 +131,10 @@ client는 다시 `binder.on('rtdata', function().....` 으로 'rtdata 주제로 
 
 `$sudo apt-get install -y chromium-browser ibus-hangul fonts-unfonts-core`
 
+
+## 기존 HTML + JS 뷰에서 React 뷰로 변경
+
+`material ui` 활용 하여 구현.
+
+![img2](./images/reactView.png)
+
