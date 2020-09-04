@@ -5,20 +5,40 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import io from 'socket.io-client'
 
+const Endpoint = "http://localhost:9999"
 
-const binder = io("http://localhost:9999/data");
+const binder = io(Endpoint + '/data');
 setInterval(function() {
   binder.emit('request', {'time': Date.now()});
 }, 1000);
+
+const profiler = io(Endpoint + '/profile')
+profiler.emit('sensor_name',{'null':'None'});
+
+function getProfile() {
+  profiler.on('sensor_name',function(data) {
+    console.log('get_profile', data)
+    const sensor_name =  document.getElementById('sensor_name')
+    const sensor_name_2 =  document.getElementById('sensor_name_2')
+    const sensor_name_3 =  document.getElementById('sensor_name_3')
+    const sensor_name_4 =  document.getElementById('sensor_name_4')
+    console.log(data.name[0])
+    sensor_name.innerHTML = data.name[0]
+    sensor_name_2.innerHTML = data.name[1]
+    sensor_name_3.innerHTML = data.name[2]
+    sensor_name_4.innerHTML = data.name[3]
+  })
+}
+getProfile();
 
 
 setInterval( function() {
   binder.on('rtdata', function(data) {
     console.log('binder buffered: ', data)
-    var target = document.getElementById('data_1')
-    var target_2 = document.getElementById('data_2')
-    var target_3 = document.getElementById('data_3')
-    var target_4 = document.getElementById('data_4')
+    const target = document.getElementById('data_1')
+    const target_2 = document.getElementById('data_2')
+    const target_3 = document.getElementById('data_3')
+    const target_4 = document.getElementById('data_4')
     console.log(target)
     target.innerHTML = data.data[0] + '\nmmAQ'
     target_2.innerHTML = data.data[1] + '\nA'
@@ -68,7 +88,7 @@ export default function App() {
           </Grid>
         <Grid item xs={6} sm={6}>
           <Paper className={classes.paper}>
-          <Typography variant="body2" color="textSecondary" align="center">
+          <Typography variant="body2" color="textSecondary" align="center" id="sensor_name">
               차압계
             </Typography>
               <Grid item xs={12}>
@@ -82,7 +102,7 @@ export default function App() {
         </Grid>
         <Grid item xs={6} sm={6}>
         <Paper className={classes.paper}>
-        <Typography variant="body2" color="textSecondary" align="center">
+        <Typography variant="body2" color="textSecondary" align="center" id="sensor_name_2">
               차압계
             </Typography>
             <Grid item xs={12}>
@@ -96,7 +116,7 @@ export default function App() {
         </Grid>
         <Grid item xs={6} sm={6}>
         <Paper className={classes.paper}>
-        <Typography variant="body2" color="textSecondary" align="center">
+        <Typography variant="body2" color="textSecondary" align="center" id="sensor_name_3">
               차압계
             </Typography>
             <Grid item xs={12}>
@@ -110,7 +130,7 @@ export default function App() {
         </Grid>
         <Grid item xs={6} sm={6}>
         <Paper className={classes.paper}>
-        <Typography variant="body2" color="textSecondary" align="center">
+        <Typography variant="body2" color="textSecondary" align="center" id="sensor_name_4">
               차압계
             </Typography>
             <Grid item xs={12}>
